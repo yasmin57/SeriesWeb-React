@@ -14,8 +14,8 @@ export const doRequest = async (
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: "Bearer " + getToken()
-    }
+      Authorization: "Bearer " + getToken(),
+    },
   };
   //Verifica se o método é PUT ou POST (att ou inserindo)
   if (!["GET", "DELETE"].includes(method)) {
@@ -28,6 +28,7 @@ export const doRequest = async (
 
 //Requisição pública
 export const doPublicRequest = async (
+  //Recebe:
   resource, //rota
   method, //método
   data = "", //body
@@ -38,11 +39,16 @@ export const doPublicRequest = async (
     method: method,
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   };
+  //Verifica se não está incluso nem GET, nem DELETE no método
+  //Verifica se o método é diferente de GET e DELETE
   if (!["GET", "DELETE"].includes(method)) {
+    ///Adiciona no corpo da requisição (body) o Json do usuário, recebido como data
     params.body = JSON.stringify(data);
   }
+
+  //Faz a requisição passando params
   return await fetch(URL + resource + urlParam, params);
 };

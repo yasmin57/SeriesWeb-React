@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 import Home from "../componets/home/Home";
 import Login from "../componets/login/Login";
@@ -25,8 +25,9 @@ const PrivateRoutes = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest} //analisar linha
-      render={props =>
+      render={(props) =>
         //Verifica se o usuário está logado
+        //Se sim exibe o component
         isSignedIn() ? (
           <div>
             <Navbar />

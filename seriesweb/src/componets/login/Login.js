@@ -3,10 +3,15 @@ import { signIn } from "../../services/auth-service";
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const MsgErro = props => {
+//Fica no html dá pag e recebe a msgErro do state
+const MsgErro = (props) => {
+  //Verifica se existe uma mensagem
   if (props.mensagem) {
+    //Retorna uma div exibindo o erro
     return <div className="alert alert-danger">{props.mensagem}</div>;
-  } else return "";
+  }
+  //Caso não exista não retorna nada
+  else return "";
 };
 
 class Login extends Component {
@@ -15,31 +20,48 @@ class Login extends Component {
     this.state = {
       email: "",
       senha: "",
-      msgErro: ""
+      msgErro: "",
     };
   }
 
-  inputHandler = e => {
+  //Função chamada no evento das inputs
+  //recebe o evento
+  inputHandler = (e) => {
+    //Resgata o nome e valor
     const { name, value } = e.target;
+    //Salva o valor da input no state
     this.setState({ [name]: value });
   };
 
-  signIn = async e => {
+  //Função chamada no submit do form, recebe o evento
+  signIn = async (e) => {
     try {
+      //Evita que a pág seja recarregada
       e.preventDefault();
+      //Pega o state e guarda em usuário
       const usuario = this.state;
+      //Deleta a msgErro que estava no state
       delete usuario.msgErro;
+
+      //Chama a função que faz a requisição e
+      // guarda o retorno em retorno
       const retorno = await signIn(usuario);
 
+      //Verifica se o retorno da requisição foi 400
       if (retorno.status === 400) {
+        //Pega a mensagem de erro do retorno
         const erro = await retorno.json();
+        //Salva a mensgaem de erro no state
         this.setState({ msgErro: erro.erro });
       }
 
+      //Verifica se o retorno da requisição foi ok
       if (retorno.ok) {
+        //Direciona / busca a pág home
         this.props.history.push("/");
       }
     } catch (e) {
+      //Caso dê errado exibe o erro no console
       console.log(e);
     }
   };
@@ -99,6 +121,5 @@ class Login extends Component {
     );
   }
 }
-// import { import } from '@babel/types';
 
 export default Login;
